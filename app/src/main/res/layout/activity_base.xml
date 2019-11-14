@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BaseActivity">
+
+    <LinearLayout
+        android:id="@+id/bottonNavBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="8dp"
+        android:background="#FFFFFF"
+        android:elevation="10dp"
+        android:foregroundGravity="bottom"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+
+        <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:baselineAligned="false"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/appointment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="false"
+                android:drawableTop="@drawable/ic_appointment"
+                android:gravity="center"
+                android:padding="2dp"
+                android:text="Appointment"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/service"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="false"
+                android:drawableTop="@drawable/ic_service"
+                android:gravity="center"
+                android:padding="2dp"
+                android:text="Service"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/customer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="false"
+                android:drawableTop="@drawable/ic_customer"
+                android:gravity="center"
+                android:paddingLeft="2dp"
+                android:paddingTop="5dp"
+                android:paddingRight="2dp"
+                android:paddingBottom="2dp"
+                android:text="Customer"
+
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="false"
+                android:drawableTop="@drawable/ic_profile"
+                android:gravity="center"
+                android:padding="2dp"
+
+                android:text="Profile"
+                android:textSize="12sp" />
+            <!--<RadioButton
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:padding="2dp"
+                android:checked="false"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:drawableTop="@drawable/selector_listing"
+
+                android:id="@+id/listing"
+                android:text="Listing"/>-->
+
+
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dynamicContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/bottonNavBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+
+
+
+</android.support.constraint.ConstraintLayout>
