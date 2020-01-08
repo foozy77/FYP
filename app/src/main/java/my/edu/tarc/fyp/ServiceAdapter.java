@@ -2,27 +2,51 @@ package my.edu.tarc.fyp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /*import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;*/
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
 
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHolder>{
 
-    private List<TestData> mData;
+    private Context mContext;
+    private List<Service> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private OnItemClickListener mListener;
+    //private ServiceAdapter.OnItemClickListener mListener;
 
-    public ServiceAdapter(List<TestData> testData) {
-        mData = testData;
+    SharedPreferences sharedPreferences;
+    String userLogged;
+    public static final String FILE_NAME = MainActivity.FILE_NAME;
+    String URL =MainActivity.URL;
+    TextView sList;
+
+    public ServiceAdapter(Context mContext,List<Service> mData) {
+
+        this.mContext = mContext;
+        this.mData=mData;
     }
 
     // inflates the row layout from xml when needed
@@ -30,16 +54,14 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         // Inflate the custom layout
         View serviceView = inflater.inflate(R.layout.service_list, parent, false);
-
         // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(serviceView);
+        ViewHolder viewHolder = new ViewHolder(serviceView, mListener);
         return viewHolder;
     }
 
-    public TestData onCreateGroupViewHolder(ViewGroup parent, int viewType) {
+    /*public TestData onCreateGroupViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -50,6 +72,32 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         ViewHolder viewHolder = new ViewHolder(serviceView);
         return new TestData(viewHolder);
 
+    }*/
+
+    // stores and recycles views as they are scrolled off screen
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView serName;
+
+        ViewHolder(View itemView, ServiceAdapter.OnItemClickListener listener) {
+            super(itemView);
+            serName = itemView.findViewById(R.id.service_list);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+        }
     }
 
 
@@ -57,12 +105,25 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         // Get the data model based on position
-        TestData service = mData.get(position);
+        Service service = mData.get(position);
+        viewHolder.serName.setText(mData.get(position).getsName());
 
-        // Set item views based on your views and data model
-        TextView textView = viewHolder.myTextView;
-        textView.setText(service.getName());
     }
+
+
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+
+
+
 
     // total number of rows
     @Override
@@ -71,21 +132,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
     }
 
 
-    // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
 
-        ViewHolder(View itemView) {
-            super(itemView);
-            myTextView = itemView.findViewById(R.id.service_list);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
-        }
-    }
 
     /*
     // convenience method for getting data at click position
@@ -102,4 +149,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
+
+
 }

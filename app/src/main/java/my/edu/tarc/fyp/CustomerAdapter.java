@@ -1,54 +1,129 @@
 package my.edu.tarc.fyp;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHolder>{
 
-    private List<TestData> mData;
+    private Context mContext;
+    private List<Customer> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    public TextView nameTextView;
+    private OnItemClickListener mListener;
+    Bitmap bitmap;
 
-    public CustomerAdapter(List<TestData> testData) {
-        mData = testData;
+    public CustomerAdapter(Context mContext,List<Customer> mData) {
+        this.mContext = mContext;
+        this.mData=mData;
     }
 
-    // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
-
+        //Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(mContext);
         // Inflate the custom layout
-        View contactView = inflater.inflate(R.layout.customer_list, parent, false);
-
+        View view = inflater.inflate(R.layout.customer_list, parent, false);
         // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(contactView);
+        ViewHolder viewHolder = new ViewHolder(view,mListener);
         return viewHolder;
     }
 
+
+    // stores and recycles views as they are scrolled off screen
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        TextView custName,custEmail;
+        ImageView custImg;
+        //Button btnViewProfile;
+
+        // inflates the row layout from xml when needed
+
+
+        ViewHolder(View itemView, OnItemClickListener listener){
+            super(itemView);
+            custName = itemView.findViewById(R.id.cust_name);
+            custEmail = itemView.findViewById(R.id.cust_email);
+            custImg = itemView.findViewById(R.id.cust_image);
+            //btnViewProfile = itemView.findViewById(R.id.btnView);
+            //mContext = itemView.getContext();
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener!=null)
+                    {
+                        int position = getAdapterPosition();
+                        if(position !=RecyclerView.NO_POSITION)
+                        {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+        }
+    }
+
+    /*public void bindData(Customer customer) {
+        String imageString;
+        custName.setText(customer.getCustName());
+        custEmail.setText(customer.getCustEmail());
+        imageString = customer.getCustImg();
+        try{
+            byte [] encodeByte=Base64.decode(imageString,Base64.DEFAULT);
+
+            InputStream inputStream  = new ByteArrayInputStream(encodeByte);
+            bitmap= BitmapFactory.decodeStream(inputStream);
+
+        }catch(Exception e){
+            e.getMessage();
+        }
+        custImg.setImageBitmap(bitmap);
+    }*/
 
 
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        // Get the data model based on position
-        TestData contact = mData.get(position);
+        String imageString;
+        viewHolder.custName.setText(mData.get(position).getCustName());
+        viewHolder.custEmail.setText(mData.get(position).getCustEmail());
+        imageString = mData.get(position).getCustImg();
 
-        // Set item views based on your views and data model
-        TextView textView = viewHolder.myTextView;
-        textView.setText(contact.getName());
-        /*Button button = viewHolder.messageButton;
-        button.setText(contact.isOnline() ? "Message" : "Offline");
-        button.setEnabled(contact.isOnline());*/
+        if(imageString==null)
+        {
+            viewHolder.custImg.setImageResource(R.drawable.ic_pp);
+        }
+        else {
+            try {
+                byte[] encodeByte = Base64.decode(imageString, Base64.DEFAULT);
+
+                InputStream inputStream = new ByteArrayInputStream(encodeByte);
+                bitmap = BitmapFactory.decodeStream(inputStream);
+
+            } catch (Exception e) {
+                e.getMessage();
+            }
+            viewHolder.custImg.setImageBitmap(bitmap);
+        }
     }
 
     // total number of rows
@@ -57,21 +132,13 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
         return mData.size();
     }
 
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
 
-    // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-            myTextView = itemView.findViewById(R.id.cust_name);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
-        }
+    public void setOnItemClickListener(OnItemClickListener listener)
+    {
+        mListener=listener;
     }
 
     /*

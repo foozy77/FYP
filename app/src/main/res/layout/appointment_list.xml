@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-   <android.support.v7.widget.CardView
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvApp"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginStart="8dp"
@@ -26,7 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:weightSum="3"
+            android:background="#fffde7">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -39,7 +41,7 @@
                     android:id="@+id/app_cust_image"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:src="@drawable/ic_pp" />
+                    app:srcCompat="@drawable/ic_pp" />
 
             </LinearLayout>
 
@@ -81,11 +83,12 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <ImageButton
+                <ImageView
+                    android:id="@+id/expand_app"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/app_details"
-                    android:src="@drawable/ic_arrow_right" />
+                    app:srcCompat="@drawable/ic_arrow_right" />
 
             </LinearLayout>
         </LinearLayout>

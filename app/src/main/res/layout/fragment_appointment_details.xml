@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AppointmentDetailsFragment"
+    android:id="@+id/appDetailsFrag">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:textSize="22dp"
+                    android:textStyle="bold|italic"
+                    android:gravity="center"
+                    android:text="Appointment Details" />
+            </TableRow>
+
+            <!--MAP HERE-->
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="13dp"
+                android:gravity="center">
+
+                <!--<com.google.android.gms.maps.MapView
+                    android:id="@+id/mapView"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:enabled="true"
+                    android:clickable="true"
+                    android:padding="15dp"
+                    android:apiKey="0BYX7MFyg8lWRKFxzwG-D93VMxZP6wH5eObwEtw"
+                    android:gravity="center" />-->
+            </TableRow>
+
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:textSize="20dp"
+                    android:textStyle="bold|italic"
+                    android:text="Appointment Location" />
+            </TableRow>
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+                <TextView
+                    android:id="@+id/app_loc"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="5dp"
+                    android:textSize="20dp"
+                    android:text="location" />
+            </TableRow>
+
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20dp"
+                    android:textStyle="bold|italic"
+                    android:text="Customer Name" />
+            </TableRow>
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+                <TextView
+                    android:id="@+id/app_cust"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="5dp"
+                    android:textSize="20dp"
+                    android:text="name" />
+            </TableRow>
+
+
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20dp"
+
+                    android:textStyle="bold|italic"
+                    android:text="Appointment Date" />
+            </TableRow>
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+                <TextView
+                    android:id="@+id/appDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="5dp"
+                    android:textSize="20dp"
+                    android:text="date" />
+            </TableRow>
+
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+                <TextView
+                    android:textSize="20dp"
+                    android:textStyle="bold|italic"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Appointment Time" />
+            </TableRow>
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+                <TextView
+                    android:id="@+id/app_seTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="5dp"
+                    android:textSize="20dp"
+                    android:text="time" />
+            </TableRow>
+
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+                <TextView
+                    android:textSize="20dp"
+                    android:textStyle="bold|italic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:text="Service Chosen" />
+            </TableRow>
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+                <TextView
+                    android:id="@+id/app_serChose"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20dp"
+                    android:paddingBottom="5dp"
+                    android:text="service" />
+            </TableRow>
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+                <TextView
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Service Price" />
+            </TableRow>
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+                <TextView
+                    android:id="@+id/app_serPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20dp"
+                    android:paddingBottom="5dp"
+                    android:text="price" />
+            </TableRow>
+
+            <!--PICTURE HERE-->
+
+            <TableRow
+                android:gravity="center"
+                android:paddingTop="20dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnReject"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/buttonstyle"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:text="Reject" />
+
+                    <Button
+                        android:id="@+id/btnAccept"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/buttonstyle"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:text="Accept" />
+                </LinearLayout>
+            </TableRow>
+
+        </TableLayout>
+
+    </LinearLayout>
+
+
+
+</FrameLayout>

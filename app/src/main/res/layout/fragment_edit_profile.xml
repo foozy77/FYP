@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditProfileFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="545dp"
+        android:orientation="vertical"
+        android:fillViewport="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp">
+            <ImageView
+                android:id="@+id/edit_pic"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_gravity="center_horizontal"
+                app:srcCompat="@drawable/ic_pp"
+                android:layout_marginTop="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="italic"
+                android:text="Click to insert image"
+                android:textSize="11dp"
+                android:layout_margin="4dp" />
+
+            <TextView
+                android:id="@+id/show_spec"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:textSize="25dp"
+                android:hint="Spec"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Email"
+                android:textSize="17dp"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold|italic"/>
+
+            <EditText
+                android:id="@+id/edit_email"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/fill_text_view"
+                android:inputType="none"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Full Name"
+                android:textSize="17dp"
+                android:textStyle="bold|italic"/>
+
+            <EditText
+                android:id="@+id/edit_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/fill_text_view"
+                android:hint="Please enter new name"
+                android:inputType="textPersonName"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Password"
+                android:textSize="17dp"
+                android:textStyle="bold|italic" />
+
+            <EditText
+                android:id="@+id/edit_password"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/fill_text_view"
+                android:hint="Please enter new password"
+                android:inputType="textPassword"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Phone Number"
+                android:textSize="17dp"
+                android:textStyle="bold|italic" />
+
+            <EditText
+                android:id="@+id/edit_phone"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/fill_text_view"
+                android:hint="Please enter new phone number"
+                android:inputType="textPersonName"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Address"
+                android:textSize="17dp"
+                android:textStyle="bold|italic" />
+
+            <EditText
+                android:id="@+id/edit_address"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/fill_text_view"
+                android:hint="Please enter new address"
+                android:minLines="3"
+                android:maxLines="6"
+                android:inputType="textMultiLine"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"/>
+
+            <LinearLayout
+                android:layout_width="288dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <Button
+                    android:id="@+id/btnCancelEdit"
+                    android:layout_width="100dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttonstyle"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_margin="10dp"
+                    android:text="Cancel"
+                    android:textAllCaps="true"
+                    android:textSize="14sp"
+                    android:textColor="#fff"/>
+                <Button
+                    android:id="@+id/btnSaveProfile"
+                    android:layout_width="100dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttonstyle"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_margin="10dp"
+                    android:text="Save"
+                    android:textAllCaps="true"
+                    android:textSize="14sp"
+                    android:textColor="#fff"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

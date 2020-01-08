@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragment_container_add"
-    tools:context=".AddServiceFragment">
+    tools:context=".AddServiceFragment"
+    android:layout_marginTop="10dp">
 
     <!-- TODO: Update blank fragment layout -->
     <TableLayout
@@ -12,114 +12,192 @@
         android:layout_height="match_parent"
         android:gravity="center">
 
-        <TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Create New Service"
+                android:textSize="22dp"
+                android:textStyle="bold|italic"
+                android:gravity="center"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="5dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="20dp"
-                android:text="Service Type" />
-        </TableRow>
-
-        <TableRow>
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:text="Service Name"
+                android:textSize="18dp"
+                android:textStyle="bold|italic"
+                android:gravity="center_vertical|fill_vertical"/>
 
         </TableRow>
-
-        <TableRow>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="20dp"
-                android:text="Service Name" />
-        </TableRow>
-
-        <TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
             <EditText
                 android:id="@+id/et_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Please enter service name" />
-
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:hint="Please enter service name"
+                android:background="@drawable/fill_text_view"
+                android:inputType="textPersonName" />
         </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
 
-        <TableRow>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="20dp"
-                android:text="Service Description" />
-        </TableRow>
+                android:text="Service Description"
+                android:textStyle="bold|italic"
+                android:gravity="center_vertical|fill_vertical"
+                android:textSize="18dp" />
 
-        <TableRow>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
             <EditText
                 android:id="@+id/et_desc"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                android:hint="Please enter brief description" />
-
+                android:layout_height="45dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/fill_text_view"
+                android:hint="Please enter brief description"
+                android:inputType="textMultiLine" />
         </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
 
-        <TableRow>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="20dp"
-                android:text="Service Price" />
-        </TableRow>
+                android:text="Service Price"
+                android:textSize="18dp"
+                android:textStyle="bold|italic"
+                android:gravity="center_vertical|fill_vertical"/>
 
-        <TableRow>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
             <EditText
                 android:id="@+id/et_price"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="number"
-                android:hint="Please enter in RM" />
-
+                android:layout_height="45dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/fill_text_view"
+                android:hint="Please enter in RM"
+                android:inputType="number" />
         </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
 
-        <TableRow>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="20dp"
-                android:text="Service Duration" />
-        </TableRow>
+                android:text="Service Duration"
+                android:textSize="18dp"
+                android:textStyle="bold|italic"
+                android:gravity="center_vertical|fill_vertical"/>
 
-        <TableRow>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
             <EditText
                 android:id="@+id/et_duration"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="number"
-                android:hint="Please enter in minutes" />
-
+                android:layout_height="45dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/fill_text_view"
+                android:hint="Please enter in minutes"
+                android:inputType="number" />
         </TableRow>
+        <!--<TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
 
-        <TableRow>
-            <Button
-                android:layout_marginTop="30dp"
-                android:id="@+id/btnBack"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_column="1"
-                android:text="Back" />
+                android:text="Service Picture"
+                android:textSize="18dp"
+                android:textStyle="bold|italic"
+                android:gravity="center_vertical|fill_vertical"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+            <EditText
+                android:id="@+id/et_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/fill_text_view"
+                android:hint="Choose picture"
+                android:inputType="number" />
 
-            <Button
-                android:layout_marginTop="30dp"
-                android:id="@+id/btnCreate"
+        </TableRow>-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_column="2"
-                android:text="Create Service" />
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <Button
+                    android:textColor="#ffffff"
+                    android:id="@+id/btnBack"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/buttonstyle"
+                    android:layout_marginRight="5dp"
+                    android:text="Back" />
+
+                <Button
+                    android:textColor="#ffffff"
+                    android:id="@+id/btnCreate"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/buttonstyle"
+                    android:layout_marginLeft="5dp"
+                    android:text="Create Service" />
+            </LinearLayout>
 
         </TableRow>
 

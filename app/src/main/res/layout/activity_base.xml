@@ -44,7 +44,7 @@
                 android:gravity="center"
                 android:padding="2dp"
                 android:text="Appointment"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
 
             <RadioButton
                 android:id="@+id/service"
@@ -57,7 +57,20 @@
                 android:gravity="center"
                 android:padding="2dp"
                 android:text="Service"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
+
+            <RadioButton
+                android:id="@+id/calendar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="false"
+                android:drawableTop="@drawable/ic_calendar"
+                android:gravity="center"
+                android:padding="2dp"
+                android:text="Calendar"
+                android:textSize="11sp" />
 
             <RadioButton
                 android:id="@+id/customer"
@@ -74,7 +87,7 @@
                 android:paddingBottom="2dp"
                 android:text="Customer"
 
-                android:textSize="12sp" />
+                android:textSize="11sp" />
 
             <RadioButton
                 android:id="@+id/profile"
@@ -88,7 +101,7 @@
                 android:padding="2dp"
 
                 android:text="Profile"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
             <!--<RadioButton
                 android:layout_width="match_parent"
                 android:gravity="center"
@@ -116,9 +129,28 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bottonNavBar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"></LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/fragment_base"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>
