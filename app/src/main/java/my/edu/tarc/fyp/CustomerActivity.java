@@ -1,5 +1,7 @@
 package my.edu.tarc.fyp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -17,8 +19,14 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -27,7 +35,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomerActivity extends BaseActivity implements CustomerProfileFragment.OnFragmentInteractionListener {
 
@@ -40,6 +50,9 @@ public class CustomerActivity extends BaseActivity implements CustomerProfileFra
 
     TextView fCustName, fCustGender, fCustRating, fCustPhone, fCustAddress, fCustEmail;
     ImageView fCustImg;
+
+    SharedPreferences sharedPreferences;
+    String userLogged;
 
     //TextView
 
@@ -66,6 +79,9 @@ public class CustomerActivity extends BaseActivity implements CustomerProfileFra
         customer.add(new Customer("foo2@email.com","foo2"));*/
         //rvCustomer.setHasFixedSize(true);
 
+        sharedPreferences = getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        userLogged = sharedPreferences.getString("logged","");
+
         fCustEmail = findViewById(R.id.f_cust_email);
         fCustAddress = findViewById(R.id.f_cust_address);
         fCustGender = findViewById(R.id.f_cust_gender);
@@ -79,7 +95,7 @@ public class CustomerActivity extends BaseActivity implements CustomerProfileFra
     }
 
     private void loadAllCust(){
-        StringRequest request=new StringRequest(Request.Method.GET, URL+"f_displayAllCust", new Response.Listener<String>() {
+        StringRequest request=new StringRequest(Request.Method.POST, URL+"f_displayAllCust", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try{
@@ -88,7 +104,7 @@ public class CustomerActivity extends BaseActivity implements CustomerProfileFra
                     for(int i=0;i<customerList.length();i++) {
                         if(customerList.length()==0)
                         {
-                            Toast.makeText(CustomerActivity.this,"No data found",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CustomerActivity.this,"No customer data found",Toast.LENGTH_SHORT).show();
                         }
                         else {
                             JSONObject cust = customerList.getJSONObject(i);
@@ -122,7 +138,7 @@ public class CustomerActivity extends BaseActivity implements CustomerProfileFra
                             FragmentManager fragmentManager = getSupportFragmentManager();
                             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                             Fragment fragment = new CustomerProfileFragment();
-                            fragmentTransaction.replace(R.id.fragment_customer_container,fragment);
+                            fragmentTransaction.replace(R.id.fragment_base,fragment);
                             fragment.setArguments(bundle);
                             fragmentTransaction.addToBackStack(null);
                             fragmentTransaction.commit();
@@ -147,9 +163,33 @@ public class CustomerActivity extends BaseActivity implements CustomerProfileFra
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getBaseContext(),error.getMessage(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(),error.getMessage(),Toast.LENGTH_SHORT).show();
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(),
+                            "????",
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof AuthFailureError) {
+                    Toast.makeText(getBaseContext(), "Error:" + "AuthFailureError", Toast.LENGTH_LONG).show();
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(), "Error:" + "ServerError", Toast.LENGTH_LONG).show();
+                } else if (error instanceof NetworkError) {
+                    Toast.makeText(getBaseContext(), "Error:" + "NetworkError", Toast.LENGTH_LONG).show();
+                } else if (error instanceof ParseError) {
+                    Toast.makeText(getBaseContext(), "Error:" + "ParseError", Toast.LENGTH_LONG).show();
+                }
             }
-        });
+        })
+        {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("beauEmail", userLogged);
+                return params;
+            }
+
+        };
         Volley.newRequestQueue(this).add(request);
     }
 

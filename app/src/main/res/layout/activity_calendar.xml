@@ -25,6 +25,7 @@
             android:gravity="center"/>
 
         <TextView
+            android:id="@+id/upComing"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:text="Upcoming Job(s)"
@@ -37,7 +38,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvCalendar"
             android:layout_width="match_parent"
-            android:layout_height="450dp" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="56dp" />
     </LinearLayout>
 
     <FrameLayout

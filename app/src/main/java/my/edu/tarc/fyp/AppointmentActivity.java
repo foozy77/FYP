@@ -22,8 +22,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -50,8 +55,9 @@ public class AppointmentActivity extends BaseActivity implements AppointmentDeta
     String URL =MainActivity.URL;
     public static final String FILE_NAME = MainActivity.FILE_NAME;
     TextView apptDate, apptLocation, apptTime;
+    ImageView showSerImg;
 
-    private String appID,appStatus, appLocation, appDate, startTime, endTime, serviceID, custEmail;
+    private String appID,appStatus, appLocation, appDate, startTime, endTime, serviceID, custEmail, serviceImg;
 
 
     @Override
@@ -67,6 +73,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentDeta
         apptDate= (TextView)findViewById(R.id.app_date);
         apptLocation= (TextView)findViewById(R.id.app_location);
         apptTime =(TextView)findViewById(R.id.app_time);
+        showSerImg=(ImageView)findViewById(R.id.app_ser_image);
         rvApp = findViewById(R.id.rvAppointment);
 
         //get the reference of RadioGroup.
@@ -104,7 +111,8 @@ public class AppointmentActivity extends BaseActivity implements AppointmentDeta
     }
 
     private void showAllAppointment(){
-        StringRequest request=new StringRequest(Request.Method.GET, URL+"f_trydisplayPendingAppt", new Response.Listener<String>() {
+
+        StringRequest request=new StringRequest(Request.Method.POST, URL+"f_trydisplayPendingAppt", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try{
@@ -113,7 +121,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentDeta
                     for(int i=0;i<loadAppList.length();i++) {
                         if(loadAppList.length()==0)
                         {
-                            Toast.makeText(AppointmentActivity.this,"No data found",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AppointmentActivity.this,"No appointment(s) found",Toast.LENGTH_SHORT).show();
                         }
                         else {
                             JSONObject loadedJob = loadAppList.getJSONObject(i);
@@ -125,8 +133,12 @@ public class AppointmentActivity extends BaseActivity implements AppointmentDeta
                             endTime = loadedJob.getString("endTime");
                             serviceID = loadedJob.getString("appServiceID");
                             custEmail = loadedJob.getString("appCustEmail");
-                            Appointment appointment = new Appointment(appID, appStatus, appLocation, appDate, startTime, endTime, serviceID, custEmail);
+                            serviceImg = loadedJob.getString("serviceImg");
+
+                            Appointment appointment = new Appointment(appID, appStatus, appLocation, appDate, startTime, endTime, serviceID, custEmail, serviceImg);
                             appt.add(appointment);
+
+
                         }
                     }
                     loadRV();
@@ -138,7 +150,20 @@ public class AppointmentActivity extends BaseActivity implements AppointmentDeta
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(AppointmentActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AppointmentActivity.this,"2 "+error.getMessage(),Toast.LENGTH_SHORT).show();
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Toast.makeText(AppointmentActivity.this,
+                            "????",
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof AuthFailureError) {
+                    Toast.makeText(AppointmentActivity.this, "Error:" + "AuthFailureError", Toast.LENGTH_LONG).show();
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(AppointmentActivity.this, "Error:" + "ServerError", Toast.LENGTH_LONG).show();
+                } else if (error instanceof NetworkError) {
+                    Toast.makeText(AppointmentActivity.this, "Error:" + "NetworkError", Toast.LENGTH_LONG).show();
+                } else if (error instanceof ParseError) {
+                    Toast.makeText(AppointmentActivity.this, "Error:" + "ParseError", Toast.LENGTH_LONG).show();
+                }
             }
         }) {
 
@@ -146,6 +171,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentDeta
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
+                //params.put("beauEmail","Adam.Acker24@example.com");
                 params.put("beauEmail",userLogged);
                 return params;
             }
@@ -179,17 +205,18 @@ public class AppointmentActivity extends BaseActivity implements AppointmentDeta
                 bundle.putString("appSerClicked", appt.get(position).getServiceID());
                 //bundle.putString("appSerPriceClicked", appt.get(position).getAppID()); -- find from serID
 
+                findViewById(R.id.pendingWord).setVisibility(View.GONE);
                 findViewById(R.id.rvAppointment).setVisibility(View.GONE);
                 //fragment to expand appointment details
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 Fragment fragment = new AppointmentDetailsFragment();
-                fragmentTransaction.replace(R.id.fragment_app_container, fragment);
+                fragmentTransaction.replace(R.id.fragment_base, fragment);
                 fragment.setArguments(bundle);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
-                Toast.makeText(AppointmentActivity.this,Integer.toString(position) + " = " +appt.get(position).getAppID(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AppointmentActivity.this,Integer.toString(position) + " = " +appt.get(position).getAppID(),Toast.LENGTH_SHORT).show();
             }
         });
     }

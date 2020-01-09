@@ -89,7 +89,7 @@ public class ServiceActivity extends BaseActivity implements AddServiceFragment.
                 // 3. Create an instance of a fragment - change according to class name
                 Fragment fragment = new AddServiceFragment();
                 // 4. Perform fragment transaction
-                fragmentTransaction.replace(R.id.fragment_service_container, fragment);
+                fragmentTransaction.replace(R.id.fragment_base, fragment);
                 // 5. Commit transaction
                 fragmentTransaction.commit();
             }
@@ -138,7 +138,7 @@ public class ServiceActivity extends BaseActivity implements AddServiceFragment.
                             FragmentManager fragmentManager = getSupportFragmentManager();
                             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                             Fragment fragment = new ServiceExpandFragment();
-                            fragmentTransaction.replace(R.id.fragment_service_container, fragment);
+                            fragmentTransaction.replace(R.id.fragment_base, fragment);
                             fragment.setArguments(bundle);
                             fragmentTransaction.addToBackStack(null);
                             fragmentTransaction.commit();

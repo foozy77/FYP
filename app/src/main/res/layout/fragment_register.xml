@@ -172,45 +172,6 @@
                 android:background="@drawable/fill_text_view"/>
         </TableRow>
 
-        <!--<TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:layout_margin="5dp">
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="horizontal">
-            <EditText
-                android:id="@+id/docName"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:paddingLeft="20dp"
-                android:paddingRight="10dp"
-                android:background="@drawable/fill_text_view"
-                android:hint="Filename"/>
-
-
-
-                <TextView
-                    android:id="@+id/docName"
-                    android:layout_width="250dp"
-                    android:layout_height="fill_parent"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="10dp"
-                    android:background="@drawable/fill_text_view" />
-
-                <Button
-                    android:id="@+id/btnChooseDoc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Browse" />
-
-            </LinearLayout>
-
-        </TableRow>-->
-
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

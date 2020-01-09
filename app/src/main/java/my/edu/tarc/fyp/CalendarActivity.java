@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -53,12 +54,13 @@ public class CalendarActivity extends BaseActivity implements CalendarJobFragmen
     private DatePickerDialog.OnDateSetListener mDataSetListener;
     final Calendar myCalendar = Calendar.getInstance();
     String passDate;
-    List<Appointment> jobs = new ArrayList<>();
-    private String appID,appStatus, appLocation, appDate, startTime, endTime, serviceID, custEmail;
+    List<CalendarJob> jobs = new ArrayList<>();
+    String appID,appStatus, appLocation, appDate, startTime, serviceName, custName, appCustImg;
+    Double servicePrice;
+    String passCustEmail;
     String formattedTodayDate;
     String passDateFormat = "yyyy-MM-dd";
-
-
+    String url;
     SharedPreferences sharedPreferences;
     String userLogged;
     public static final String FILE_NAME = MainActivity.FILE_NAME;
@@ -94,13 +96,16 @@ public class CalendarActivity extends BaseActivity implements CalendarJobFragmen
         jobLoc = (TextView)findViewById(R.id.job_location);
         jobPrice = (TextView)findViewById(R.id.job_serPrice);
         jobService = (TextView)findViewById(R.id.job_serName);
-        jobCustImg = (ImageView) findViewById(R.id.job_cust_image);
+        //jobCustImg = (ImageView) findViewById(R.id.job_cust_image);
 
         dateEnter= (TextView)findViewById(R.id.dateEnter);
         dateEnter.setText(formattedTodayDate);
+        passDate=df2.format(myCalendar.getTime());
+        url=URL+"f_trydisplayJob?appDate="+passDate+"&beauEmail="+userLogged;
+
         //passDate = df2.format(c);
         //try
-        passDate = "2018-01-24";
+        //passDate = "2018-01-24";
         //Toast.makeText(CalendarActivity.this,"1 " + passDate + " - " +formattedTodayDate,Toast.LENGTH_SHORT).show();
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -131,7 +136,7 @@ public class CalendarActivity extends BaseActivity implements CalendarJobFragmen
             // ...
             @Override
             public void onTextChanged(CharSequence text, int start, int count, int after) {
-                loadJob();
+
                 //loadCust();
             }
             @Override
@@ -144,7 +149,7 @@ public class CalendarActivity extends BaseActivity implements CalendarJobFragmen
             @Override
             public void afterTextChanged(Editable s) {
 
-                loadJob();
+
                 //loadCust();
             }
         });
@@ -159,8 +164,45 @@ public class CalendarActivity extends BaseActivity implements CalendarJobFragmen
         rb.setCompoundDrawablesWithIntrinsicBounds( 0,R.drawable.ic_calendar_clicked, 0,0);
         rb.setTextColor(Color.parseColor("#3F51B5"));
 
+
+        rvCalendar = (RecyclerView) findViewById(R.id.rvCalendar);
+        recyclerAdapter = new CalendarAdapter(getBaseContext(), jobs);
+        rvCalendar.setAdapter(recyclerAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getBaseContext());
+        rvCalendar.setLayoutManager(layoutManager);
+
+        recyclerAdapter.setOnClickListener(new CalendarAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                //findViewById(R.id.rvCustomer).setVisibility(View.GONE);
+                Bundle bundle = new Bundle();
+                bundle.putString("position", Integer.toString(position));
+                bundle.putString("passCustEmail", jobs.get(position).getCustName());// -- to get all info
+                bundle.putString("passAppID",jobs.get(position).getAppID());
+                bundle.putString("passSerID",jobs.get(position).getServiceName());
+                bundle.putString("passAppDate",jobs.get(position).getAppDate());
+                //bundle.putString("appLocClicked", customer.get(position).getCustName());
+
+                findViewById(R.id.rvCalendar).setVisibility(View.GONE);
+                findViewById(R.id.upComing).setVisibility(View.GONE);
+                findViewById(R.id.dateEnter).setVisibility(View.GONE);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                Fragment fragment = new CalendarJobFragment();
+                fragmentTransaction.replace(R.id.fragment_base, fragment);
+                fragment.setArguments(bundle);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                //Toast.makeText(CalendarActivity.this,Integer.toString(position) + " = " +jobs.get(position).getCustEmail(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         loadJob();
-        //loadCust();
+        //loadService();
+
+
+
 
     }
 
@@ -170,6 +212,9 @@ public class CalendarActivity extends BaseActivity implements CalendarJobFragmen
         SimpleDateFormat sdf2 = new SimpleDateFormat(passDateFormat, Locale.ENGLISH);
         dateEnter.setText(sdf.format(myCalendar.getTime()));
         passDate=sdf2.format(myCalendar.getTime());
+        url=URL+"f_trydisplayJob?appDate="+passDate+"&beauEmail="+userLogged;;
+        loadJob();
+
     }
 
     public void loadJob()
@@ -179,55 +224,40 @@ public class CalendarActivity extends BaseActivity implements CalendarJobFragmen
         {
             passDate=formattedTodayDate;
         }*/
+        jobs.clear();
 
-        StringRequest strReq = new StringRequest(Request.Method.GET, URL+"f_trydisplayJob", new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
 
                 try{
                     JSONArray loadJobList=new JSONArray(response);
-                    for(int i=0;i<loadJobList.length();i++) {
-                        JSONObject loadedJob = loadJobList.getJSONObject(i);
+                    Log.e("testing",loadJobList.length()+"");
+                    if(loadJobList.length()==0)
+                    {
+                        Toast.makeText(getBaseContext(),"No job(s) found",Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        for (int i = 0; i < loadJobList.length(); i++) {
+                            JSONObject loadedJob = loadJobList.getJSONObject(i);
 
-                        appID = loadedJob.getString("appID");
-                        appStatus = loadedJob.getString("appStatus");
-                        appLocation = loadedJob.getString("appLocation");
-                        appDate = loadedJob.getString("appDate");
-                        startTime = loadedJob.getString("startTime");
-                        endTime = loadedJob.getString("endTime");
-                        serviceID = loadedJob.getString("appServiceID");
-                        custEmail = loadedJob.getString("appCustEmail");
+                            appStatus = loadedJob.getString("appStatus");
+                            appLocation = loadedJob.getString("appLocation");
+                            custName = loadedJob.getString("custName");
+                            startTime = loadedJob.getString("startTime");
+                            appID = loadedJob.getString("appID");
+                            serviceName = loadedJob.getString("serviceName");
+                            servicePrice = loadedJob.getDouble("servicePrice");
+                            appCustImg = loadedJob.getString("custImg");
 
-                        Appointment appointment = new Appointment(appID,appStatus, appLocation, appDate, startTime, endTime, serviceID, custEmail);
-                        jobs.add(appointment);
+                            jobs.add(new CalendarJob(appStatus, appLocation, passDate, startTime, custName, serviceName, servicePrice, appID, appCustImg));
+
+                        }
+                        loadJobList = null;
+                        recyclerAdapter.notifyDataSetChanged();
                     }
 
-                    rvCalendar = (RecyclerView) findViewById(R.id.rvCalendar);
-                    recyclerAdapter = new CalendarAdapter(getBaseContext(), jobs);
-                    rvCalendar.setAdapter(recyclerAdapter);
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getBaseContext());
-                    rvCalendar.setLayoutManager(layoutManager);
-
-                    recyclerAdapter.setOnClickListener(new CalendarAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(int position) {
-                            //findViewById(R.id.rvCustomer).setVisibility(View.GONE);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("position", Integer.toString(position));
-                            bundle.putString("clCustEmail", jobs.get(position).getCustEmail());// -- to get all info
-                            //bundle.putString("appLocClicked", customer.get(position).getCustName());
-
-                            FragmentManager fragmentManager = getSupportFragmentManager();
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            Fragment fragment = new CalendarJobFragment();
-                            fragmentTransaction.replace(R.id.fragment_calendar_container, fragment);
-                            fragment.setArguments(bundle);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
-                            Toast.makeText(CalendarActivity.this,Integer.toString(position) + " = " +jobs.get(position).getCustEmail(),Toast.LENGTH_SHORT).show();
-                        }
-                    });
                 }catch(Exception ex){
                     Toast.makeText(CalendarActivity.this,ex.getMessage(),Toast.LENGTH_SHORT).show();
                 }
@@ -241,14 +271,14 @@ public class CalendarActivity extends BaseActivity implements CalendarJobFragmen
                 //Log.e(AppController.TAG, "Login Error: " + error.getMessage());
                 Toast.makeText(getBaseContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }); /*{
+        });/*{
 
             @Override
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("appDate",passDate);
-                //params.put("beauEmail",userLogged);
+                params.put("beauEmail",userLogged);
                 return params;
             }
 
@@ -257,7 +287,8 @@ public class CalendarActivity extends BaseActivity implements CalendarJobFragmen
         Volley.newRequestQueue(getBaseContext()).add(strReq);
     }
 
-    private void loadCust(){
+
+    /*private void loadCust(){
 
         StringRequest request=new StringRequest(Request.Method.POST, URL+"f_loadCustomerInfo", new Response.Listener<String>() {
             @Override
@@ -307,6 +338,42 @@ public class CalendarActivity extends BaseActivity implements CalendarJobFragmen
 
     }
 
+    /*private void loadService(){
+
+        StringRequest request=new StringRequest(Request.Method.POST, URL+"f_loadService", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray service = new JSONArray(response);
+                    if (service.length() != 0) {
+                        for (int i = 0; i < service.length(); i++) {
+                            JSONObject ser = service.getJSONObject(i);
+                            jobService.setText("Service : " +ser.getString("serviceName"));
+                            Double thePrice = ser.getDouble("servicePrice");
+                            jobPrice.setText("Price : RM " + String.format("%.2f", thePrice));
+
+                        }
+                    }
+                }catch(Exception ex){
+                    Toast.makeText(getBaseContext(),ex.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getBaseContext(),error.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("serviceID", serviceID);
+                return params;
+            }
+        };
+        Volley.newRequestQueue(getBaseContext()).add(request);
+    }*/
 
     @Override
     public void onBackPressed() {

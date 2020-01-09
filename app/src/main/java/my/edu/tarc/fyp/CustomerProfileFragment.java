@@ -1,6 +1,7 @@
 package my.edu.tarc.fyp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +12,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -59,7 +61,7 @@ public class CustomerProfileFragment extends Fragment {
     Bitmap bitmap;
     String passCustEmail;
     RatingBar custStar;
-
+    Button startChat;
     private OnFragmentInteractionListener mListener;
 
     public CustomerProfileFragment() {
@@ -108,9 +110,21 @@ public class CustomerProfileFragment extends Fragment {
         custEmail= view.findViewById(R.id.f_cust_email);
         custAddress= view.findViewById(R.id.f_cust_address);
         custStar=view.findViewById(R.id.f_cust_star);
+        startChat=view.findViewById(R.id.btnChat);
 
         loadCust();
         // Inflate the layout for this fragment
+
+
+        startChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getActivity(),MessageActivity.class);
+                startActivity(myIntent);
+
+            }
+        });
+
         return view;
     }
 
@@ -189,7 +203,7 @@ public class CustomerProfileFragment extends Fragment {
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("custEmail", "Abdul_Foy@nowhere.com");
+                params.put("custEmail", passCustEmail);
                 return params;
             }
         };

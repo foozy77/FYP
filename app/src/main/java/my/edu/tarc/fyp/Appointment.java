@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public class Appointment {
 
-    private String appID,appStatus, appLocation, appDate, startTime, endTime, serviceID, custEmail;
+    private String appID,appStatus, appLocation, appDate, startTime, endTime, serviceID, custEmail, serviceImg;
 
     public Appointment() {
     }
 
-    public Appointment(String appID, String appStatus, String appLocation, String appDate, String startTime, String endTime, String serviceID, String custEmail) {
+    public Appointment(String appID, String appStatus, String appLocation, String appDate, String startTime, String endTime, String serviceID, String custEmail, String serviceImg) {
         this.appID = appID;
         this.appStatus = appStatus;
         this.appLocation = appLocation;
@@ -18,6 +18,7 @@ public class Appointment {
         this.endTime = endTime;
         this.serviceID = serviceID;
         this.custEmail = custEmail;
+        this.serviceImg = serviceImg;
     }
 
     public Appointment(String appID, String appLocation, String appDate, String startTime, String endTime, String serviceID, String custEmail) {
@@ -33,6 +34,14 @@ public class Appointment {
     public Appointment(String appID, String appStatus) {
         this.appID = appID;
         this.appStatus = appStatus;
+    }
+
+    public String getServiceImg() {
+        return serviceImg;
+    }
+
+    public void setServiceImg(String serviceImg) {
+        this.serviceImg = serviceImg;
     }
 
     public String getAppID() {

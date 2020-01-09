@@ -2,25 +2,29 @@ package my.edu.tarc.fyp;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<Appointment> mData;
+    private List<CalendarJob> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private OnItemClickListener mListener;
     Bitmap bitmap;
 
-    public CalendarAdapter(Context mContext,List<Appointment> mData) {
+    public CalendarAdapter(Context mContext,List<CalendarJob> mData) {
 
         this.mContext = mContext;
         this.mData=mData;
@@ -43,14 +47,34 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         // Get the data model based on position
-        Appointment calendarJob = mData.get(position);
-        String duration = mData.get(position).getStartTime() + " - " + mData.get(position).getEndTime();
-        viewHolder.jobLocation.setText(mData.get(position).getAppLocation());
-        //viewHolder.jobDate.setText(mData.get(position).getAppDate());
-        viewHolder.jobTime.setText(duration);
-        viewHolder.jobCustName.setText(mData.get(position).getCustEmail());
-        viewHolder.jobSerName.setText(mData.get(position).getServiceID());
-        //viewHolder.jobSerPrice.setText(mData.get(position).getServiceID());
+        CalendarJob calendarJob = mData.get(position);
+        //String duration = mData.get(position).getStartTime() + " - " + mData.get(position).getEndTime();
+        viewHolder.jobLocation.setText("Location : " + mData.get(position).getAppLocation());
+        viewHolder.jobTime.setText("Time : " +mData.get(position).getStartTime());
+        viewHolder.jobCustName.setText("Customer : "+mData.get(position).getCustName());
+        viewHolder.jobSerName.setText("Service : " +mData.get(position).getServiceName());
+        //viewHolder.thePrice = mData.get(position).getServicePrice();
+        viewHolder.jobSerPrice.setText("Price : RM " + String.format("%.2f",mData.get(position).getServicePrice()));
+        viewHolder.jobAppStatus.setText("Status : " + mData.get(position).getAppStatus());
+        String imgString = mData.get(position).getCustImage();
+        if(imgString==null)
+        {
+            viewHolder.jobCustImg.setImageResource(R.drawable.ic_pp);
+        }
+        else {
+            try {
+                byte[] encodeByte = Base64.decode(imgString, Base64.DEFAULT);
+                //ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+                InputStream inputStream = new ByteArrayInputStream(encodeByte);
+                //bitmap.compress(Bitmap.CompressFormat.PNG, 1, stream);
+                bitmap = BitmapFactory.decodeStream(inputStream);
+
+            } catch (Exception e) {
+                e.getMessage();
+            }
+            viewHolder.jobCustImg.setImageBitmap(bitmap);
+        }
     }
 
     // total number of rows
@@ -73,8 +97,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView jobLocation, jobDate, jobTime, jobCustName, jobSerName, jobSerPrice;
+        TextView jobLocation, jobDate, jobTime, jobCustName, jobSerName, jobSerPrice, jobAppStatus;
         ImageView jobCustImg;
+        //Double thePrice;
         //CardView cvApp;
 
         ViewHolder(View itemView, OnItemClickListener listener) {
@@ -82,10 +107,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
 
             jobLocation = itemView.findViewById(R.id.job_location);
             jobTime = itemView.findViewById(R.id.job_time);
-            //jobCustImg = itemView.findViewById(R.id.job_cust_image);
+            jobCustImg = itemView.findViewById(R.id.job_cust_image);
             jobSerName = itemView.findViewById(R.id.job_serName);
             jobSerPrice = itemView.findViewById(R.id.job_serPrice);
             jobCustName =itemView.findViewById(R.id.job_custName);
+            jobAppStatus =itemView.findViewById(R.id.job_appStat);
             //cvApp = (CardView)itemView.findViewById(R.id.cvApp);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -117,5 +143,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
+    }
+
+    public void updateList(List<CalendarJob> data)
+    {
+        mData=data;
+        notifyDataSetChanged();
     }
 }

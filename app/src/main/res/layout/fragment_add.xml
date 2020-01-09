@@ -146,27 +146,21 @@
             android:layout_height="match_parent"
             android:gravity="center">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Service Picture"
-                android:textSize="18dp"
-                android:textStyle="bold|italic"
-                android:gravity="center_vertical|fill_vertical"/>
+            <ImageView
+                android:id="@+id/insert_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                />
         </TableRow>
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center">
-            <EditText
-                android:id="@+id/et_picture"
+            <Button
+                android:id="@+id/btnBrowseImg"
                 android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="10dp"
-                android:background="@drawable/fill_text_view"
-                android:hint="Choose picture"
-                android:inputType="number" />
+                android:layout_height="wrap_content"
+                android:text="Browse Image" />
 
         </TableRow>-->
         <TableRow
@@ -202,7 +196,6 @@
         </TableRow>
 
     </TableLayout>
-
 
 
 </FrameLayout>

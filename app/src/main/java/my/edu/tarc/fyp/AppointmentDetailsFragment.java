@@ -1,6 +1,7 @@
 package my.edu.tarc.fyp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +79,7 @@ public class AppointmentDetailsFragment extends Fragment {
     public static final String FILE_NAME = MainActivity.FILE_NAME;
     Button acceptApp, rejectApp;
     String appIDFound, cEmailFound, sIDFound;
-    TextView appCust, appDate, appLoc, appTime, appSerChosen, appSerPrice;
+    TextView appCust, appDate, appLoc, appTime, appSerChosen, appSerPrice, appRequest;
 
     String newAppSTime, newAppDate;
     ArrayList<String> allAppTime = new ArrayList<String>();
@@ -136,9 +138,11 @@ public class AppointmentDetailsFragment extends Fragment {
         appTime = (TextView) view.findViewById(R.id.app_seTime);
         appSerChosen = (TextView) view.findViewById(R.id.app_serChose);
         appSerPrice = (TextView) view.findViewById(R.id.app_serPrice);
+        appRequest = (TextView) view.findViewById(R.id.app_request);
 
         acceptApp = (Button) view.findViewById(R.id.btnAccept);
         rejectApp = (Button) view.findViewById(R.id.btnReject);
+
 
         //mMapView = (MapView) view.findViewById(R.id.mapView);
         //mMapView.onCreate(savedInstanceState);
@@ -160,7 +164,7 @@ public class AppointmentDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                rejectAppointment();
+                createAndShowAlertDialog();
             }
         });
 
@@ -286,9 +290,8 @@ public class AppointmentDetailsFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void loadAppInfo()
-    {
-        StringRequest request=new StringRequest(Request.Method.POST, URL+"loadAppDetails", new Response.Listener<String>() {
+    public void loadAppInfo() {
+        StringRequest request=new StringRequest(Request.Method.POST, URL+"f_loadAppDetails", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -304,9 +307,10 @@ public class AppointmentDetailsFragment extends Fragment {
                             //Date date = inputFormat.parse(theDate);
                             //appDate.setText(date.toString());
                             appDate.setText(app.getString("appDate"));
-                            String duration = app.getString("startTime") + " - " + app.getString("endTime");
-                            appTime.setText(duration);
-                            Toast.makeText(getActivity(),theDate,Toast.LENGTH_SHORT).show();
+                            //String duration = app.getString("startTime") + " - " + app.getString("endTime");
+                            appTime.setText(app.getString("startTime"));
+                            appRequest.setText(app.getString("appRequest"));
+                            //Toast.makeText(getActivity(),theDate,Toast.LENGTH_SHORT).show();
                         }
                     }
                 }catch(Exception ex){
@@ -333,7 +337,7 @@ public class AppointmentDetailsFragment extends Fragment {
 
     private void loadCust(){
 
-        StringRequest request=new StringRequest(Request.Method.POST, URL+"loadCustomerInfo", new Response.Listener<String>() {
+        StringRequest request=new StringRequest(Request.Method.POST, URL+"f_loadCustomerInfo", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -367,7 +371,7 @@ public class AppointmentDetailsFragment extends Fragment {
 
     private void loadService(){
 
-        StringRequest request=new StringRequest(Request.Method.POST, URL+"loadService", new Response.Listener<String>() {
+        StringRequest request=new StringRequest(Request.Method.POST, URL+"f_loadService", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -404,13 +408,13 @@ public class AppointmentDetailsFragment extends Fragment {
 
     public void confirmAppointment() {
 
-        int accept = validateAcceptApp();
+        /*int accept = validateAcceptApp();
 
         if (accept == 0) {
             Toast.makeText(getActivity(), "Appointment Time Clashed", Toast.LENGTH_LONG).show();
-        } else {
+        } else {*/
 
-            StringRequest request = new StringRequest(Request.Method.POST, URL + "confirmAppt", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, URL + "f_confirmAppt", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     try {
@@ -452,10 +456,9 @@ public class AppointmentDetailsFragment extends Fragment {
 
             Volley.newRequestQueue(getActivity()).add(request);
         }
-    }
 
     public int validateAcceptApp() {
-        StringRequest request=new StringRequest(Request.Method.POST, URL+"tryGetAllAppTime", new Response.Listener<String>() {
+        StringRequest request=new StringRequest(Request.Method.POST, URL+"f_tryGetAllAppTime", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try{
@@ -526,7 +529,7 @@ public class AppointmentDetailsFragment extends Fragment {
 
     public void rejectAppointment(){
         //RequestQueue queue = Volley.newRequestQueue(getActivity());
-        StringRequest request=new StringRequest(Request.Method.POST, URL+"rejectAppt", new Response.Listener<String>() {
+        StringRequest request=new StringRequest(Request.Method.POST, URL+"f_rejectAppt", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try{
@@ -571,5 +574,27 @@ public class AppointmentDetailsFragment extends Fragment {
 
         Volley.newRequestQueue(getActivity()).add(request);
 
+    }
+
+    private void createAndShowAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Are you sure you want to reject the appointment?");
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO
+                rejectAppointment();
+                dialog.dismiss();
+                Intent myIntent = new Intent(getContext(), AppointmentActivity.class);
+                startActivity(myIntent);
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

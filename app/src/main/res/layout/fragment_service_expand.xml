@@ -6,6 +6,12 @@
     tools:context=".ServiceExpandFragment"
     android:id="@+id/fragment_service_expand">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="545dp"
+        android:orientation="vertical"
+        android:fillViewport="true"
+        >
     <!-- TODO: Update blank fragment layout -->
     <TableLayout
         android:layout_width="match_parent"
@@ -237,5 +243,5 @@
 
     </TableLayout>
 
-
+    </ScrollView>
 </FrameLayout>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
-    <item
+    <!--<item
         android:id="@+id/item1"
         android:title="Service History"
         app:showAsAction="never" />
@@ -12,7 +12,7 @@
     <item
         android:id="@+id/item2"
         android:title="Support/Help"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
 
     <item
         android:id="@+id/item3"

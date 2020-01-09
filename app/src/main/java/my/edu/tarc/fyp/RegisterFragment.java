@@ -1,9 +1,12 @@
 package my.edu.tarc.fyp;
-
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.nio.file.*;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,7 +14,9 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +45,10 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -79,6 +87,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     String genderChose;
     String PdfNameHolder, PdfPathHolder, PdfID;
     Uri uri;
+    String passFile;
     private static final int REQUEST_PDF = 1;
 
 
@@ -127,7 +136,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
         btnRegister = (Button) view.findViewById(R.id.btnRegister);
-        //btnBrowse = (Button) view.findViewById(R.id.btnChooseDoc);
+
         rPassword = (EditText)view.findViewById(R.id.rPassword);
         //rConPassword = (EditText)view.findViewById(R.id.rConPassword);
         rName = (EditText)view.findViewById(R.id.rName);
@@ -140,7 +149,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
         spinner=(Spinner)view.findViewById(R.id.spinnerType);
 
-        //pdfName = (TextView) view.findViewById(R.id.docName);
 
         adapter = ArrayAdapter.createFromResource(getActivity(), R.array.specialisation, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -158,12 +166,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        /*btnBrowse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pickFile();
-            }
-        });*/
 
         return view;
     }
@@ -198,73 +200,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_PDF && resultCode == MainActivity.RESULT_OK && data != null && data.getData() != null) {
-            Uri uri = data.getData();
-            //uri = FilePath.getPath(this.getContext(),uri);
-            //Log.i(TAG,"Selected File Path:" + selectedFilePath);
-
-            if(uri != null && !uri.equals("")){
-                pdfName.setText(uri.toString().trim());
-            }else{
-                Toast.makeText(this.getContext(),"Cannot upload file to server",Toast.LENGTH_SHORT).show();
-            }
-            //uri = data.getData();
-            //pdfName.setText(uri.toString());
-            //Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-            //try to get filename then set text
-            //pdfName.setText("selected");
-            //Toast.makeText(this.getActivity(), uri.toString(), Toast.LENGTH_LONG).show();
-
-            /*String FilePath = data.getData().getPath();
-            String FileName = data.getData().getLastPathSegment();
-            int lastPos = FilePath.length() - FileName.length();
-            String Folder = FilePath.substring(0, lastPos);
-            Toast.makeText(this.getActivity(), FileName, Toast.LENGTH_LONG).show();*/
-
-        }
-        else if(data == null)
-        {
-            Toast.makeText(this.getActivity(), "null", Toast.LENGTH_LONG).show();
-        }
-        else
-        {
-            Toast.makeText(this.getActivity(), "idk", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    /*public void PdfUploadFunction() {
-
-        PdfNameHolder = PdfNameEditText.getText().toString().trim();
-
-        PdfPathHolder = FilePath.getPath(this, uri);
-
-        if (PdfPathHolder == null) {
-
-            Toast.makeText(this.getActivity(), "Please move your PDF file to internal storage & try again.", Toast.LENGTH_LONG).show();
-
-        } else {
-
-            try {
-
-                PdfID = UUID.randomUUID().toString();
-
-                new MultipartUploadRequest(this, PdfID, PDF_UPLOAD_HTTP_URL)
-                        .addFileToUpload(PdfPathHolder, "pdf")
-                        .addParameter("name", PdfNameHolder)
-                        .setNotificationConfig(new UploadNotificationConfig())
-                        .setMaxRetries(5)
-                        .startUpload();
-
-            } catch (Exception exception) {
-
-                Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }*/
-
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -280,26 +215,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void backToMain(View view)
-    {
-        /*if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
-
-        } else {
-            //super.onBackPressed();
-            view.findViewById(R.id.mainGone).setVisibility(View.VISIBLE);
-        }*/
-        Toast.makeText(getActivity(), "HEHE", Toast.LENGTH_LONG).show();
-    }
-
-    public void pickFile() {
-
-        Intent intent = new Intent();
-        intent.setType("application/pdf");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select PDF"),REQUEST_PDF);
-
-    }
 
     public void validateRegister(View view){
 
@@ -316,21 +231,19 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             rName.setError("Enter your name");
             return;
         }
-
+        if(TextUtils.isEmpty(email)){
+            rEmail.setError("Enter your email");
+            return;
+        }
+        if(TextUtils.isEmpty(password)){
+            rPassword.setError("Enter new password");
+            return;
+        }
         if(TextUtils.isEmpty(phone)){
             rPhone.setError("Enter your phone number");
             return;
         }
 
-        if(TextUtils.isEmpty(email)){
-            rEmail.setError("Enter your email");
-            return;
-        }
-
-        if(TextUtils.isEmpty(password)){
-            rPassword.setError("Enter new password");
-            return;
-        }
 
         /*if(TextUtils.isEmpty(conpassword)){
             rConPassword.setError("Re-enter password");
@@ -375,6 +288,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             genderChose="Female";
         }
 
+
+
         progressDialog.setMessage("Registering...");
         progressDialog.show();
 
@@ -394,8 +309,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("logged",email);
                             editor.commit();
-                            Toast.makeText(getActivity(), "Successfully Registered", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(getActivity(), AppointmentActivity.class));
+                            Toast.makeText(getActivity(), "Successfully Registered. Please wait to be approved.", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(getActivity(), MainActivity.class));
 
                         } else {
                             progressDialog.dismiss();
@@ -418,6 +333,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
+
                     Map<String, String> params = new HashMap<>();
                     //params.put("beauID", "B6");
                     params.put("beauName", name);
@@ -434,4 +350,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
         }
     }
+
+
+
 }

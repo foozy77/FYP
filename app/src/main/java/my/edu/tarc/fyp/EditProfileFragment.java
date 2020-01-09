@@ -274,8 +274,10 @@ public class EditProfileFragment extends Fragment {
                             else {
                                 try {
                                     byte[] encodeByte = Base64.decode(imageString, Base64.DEFAULT);
+                                    //ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
                                     InputStream inputStream = new ByteArrayInputStream(encodeByte);
+                                    //bitmap.compress(Bitmap.CompressFormat.PNG, 1, stream);
                                     bitmap = BitmapFactory.decodeStream(inputStream);
 
                                 } catch (Exception e) {
@@ -440,7 +442,7 @@ public class EditProfileFragment extends Fragment {
 
         //converting image to base64 string
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, baos);
         byte[] imageBytes = baos.toByteArray();
         imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         //Toast.makeText(getContext(), "can convert", Toast.LENGTH_LONG).show();

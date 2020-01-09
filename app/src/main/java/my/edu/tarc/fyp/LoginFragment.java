@@ -58,6 +58,7 @@ public class LoginFragment extends Fragment {
     Button btnLogin;
     SharedPreferences sharedPreferences;
     String userLogged;
+    String showBeauName;
     ProgressDialog progressDialog;
     public static final String FILE_NAME = MainActivity.FILE_NAME;
 
@@ -229,6 +230,9 @@ public class LoginFragment extends Fragment {
         // Adding request to request queue
         Volley.newRequestQueue(getActivity()).add(strReq);
     }
+
+
+
 
 }
 

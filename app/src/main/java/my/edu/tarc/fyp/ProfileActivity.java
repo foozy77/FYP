@@ -47,6 +47,7 @@ public class ProfileActivity extends BaseActivity implements EditProfileFragment
     String userLogged;
     Bitmap bitmap;
     RatingBar beauStar;
+    String showBeauName;
     public static final String FILE_NAME = MainActivity.FILE_NAME;
 
     @Override
@@ -69,6 +70,8 @@ public class ProfileActivity extends BaseActivity implements EditProfileFragment
         //beauImg = findViewById(R.id.beau_img);
         sharedPreferences = getSharedPreferences(FILE_NAME, MODE_PRIVATE);
         userLogged = sharedPreferences.getString("logged","");
+        showBeauName = sharedPreferences.getString("showBeauName","");
+
 
         RadioGroup rg=(RadioGroup)findViewById(R.id.radioGroup1);
         RadioButton rb=(RadioButton)findViewById(R.id.profile);
@@ -96,7 +99,7 @@ public class ProfileActivity extends BaseActivity implements EditProfileFragment
                 // 3. Create an instance of a fragment - change according to class name
                 Fragment fragment = new EditProfileFragment();
                 // 4. Perform fragment transaction
-                fragmentTransaction.replace(R.id.fragment_profile_container, fragment);
+                fragmentTransaction.replace(R.id.fragment_base, fragment);
                 // 5. Commit transaction
                 fragmentTransaction.commit();
             }
@@ -120,6 +123,9 @@ public class ProfileActivity extends BaseActivity implements EditProfileFragment
                             //beauSpec.setText(beau.getString("beauSpec"));
                             beauRating.setText(beau.getString("beauRating"));
                             beauName.setText(beau.getString("beauName"));
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("showBeauName",beau.getString("beauName"));
+                            editor.commit();
                             beauPhone.setText(beau.getString("beauPhoneNum"));
                             beauEmail.setText(beau.getString("beauEmail"));
                             beauAddress.setText(beau.getString("beauAddress"));

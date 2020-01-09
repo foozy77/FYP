@@ -7,7 +7,12 @@
     android:id="@+id/appDetailsFrag">
 
     <!-- TODO: Update blank fragment layout -->
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="540dp"
+        android:orientation="vertical"
+        android:fillViewport="true"
+        >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -182,8 +187,7 @@
                 android:paddingRight="15dp">
                 <TextView
                     android:textSize="20dp"
-                    android:textStyle="bold"
-
+                    android:textStyle="bold|italic"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Service Price" />
@@ -199,6 +203,29 @@
                     android:textSize="20dp"
                     android:paddingBottom="5dp"
                     android:text="price" />
+            </TableRow>
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+                <TextView
+                    android:textSize="20dp"
+                    android:textStyle="bold|italic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Additional Request" />
+            </TableRow>
+            <TableRow
+                android:background="#ede7f6"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+                <TextView
+                    android:id="@+id/app_request"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20dp"
+                    android:paddingBottom="5dp"
+                    android:text="Additional Request" />
             </TableRow>
 
             <!--PICTURE HERE-->
@@ -235,6 +262,6 @@
 
     </LinearLayout>
 
-
+    </ScrollView>
 
 </FrameLayout>

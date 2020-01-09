@@ -28,7 +28,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private ItemClickListener mClickListener;
     private OnItemClickListener mListener;
     Bitmap bitmap;
-    String imageString;
 
 
     public AppointmentAdapter(Context mContext,List<Appointment> mData) {
@@ -56,32 +55,28 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         // Get the data model based on position
         Appointment appt = mData.get(position);
         String duration = mData.get(position).getStartTime() + " - " + mData.get(position).getEndTime();
-        viewHolder.appLocation.setText(mData.get(position).getAppLocation());
-        viewHolder.appDate.setText(mData.get(position).getAppDate());
-        viewHolder.appTime.setText(duration);
-        String theCustEmail = mData.get(position).getCustEmail();
+        viewHolder.appLocation.setText("Location : " + mData.get(position).getAppLocation());
+        viewHolder.appDate.setText("Date : " + mData.get(position).getAppDate());
+        viewHolder.appTime.setText("Time : " + mData.get(position).getStartTime());
+        String imgString = mData.get(position).getServiceImg();
 
-        /*for(int i=0;i<mCustomer.size();i++) {
-            if(theCustEmail.equals(mCustomer.get(i).getCustEmail())) {
-                imageString = mCustomer.get(i).getCustImg();
+        if (imgString == null) {
+            viewHolder.appSerImg.setImageResource(R.drawable.default_ser_img);
+        } else {
+            try {
+                byte[] encodeByte = Base64.decode(imgString, Base64.DEFAULT);
 
-                if (imageString == null) {
-                    viewHolder.appCustImg.setImageResource(R.drawable.ic_pp);
-                } else {
-                    try {
-                        byte[] encodeByte = Base64.decode(imageString, Base64.DEFAULT);
+                InputStream inputStream = new ByteArrayInputStream(encodeByte);
+                bitmap = BitmapFactory.decodeStream(inputStream);
 
-                        InputStream inputStream = new ByteArrayInputStream(encodeByte);
-                        bitmap = BitmapFactory.decodeStream(inputStream);
-
-                    } catch (Exception e) {
-                        e.getMessage();
-                    }
-                    viewHolder.appCustImg.setImageBitmap(bitmap);
-                }
+            } catch (Exception e) {
+                e.getMessage();
             }
-        }*/
+            viewHolder.appSerImg.setImageBitmap(bitmap);
+        }
     }
+
+
 
     // total number of rows
     @Override
@@ -105,7 +100,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView appLocation, appDate, appTime;
-        ImageView appCustImg;
+        ImageView appSerImg;
         //CardView cvApp;
 
         ViewHolder(View itemView, OnItemClickListener listener) {
@@ -114,7 +109,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             appLocation = itemView.findViewById(R.id.app_location);
             appDate = itemView.findViewById(R.id.app_date);
             appTime = itemView.findViewById(R.id.app_time);
-            appCustImg = itemView.findViewById(R.id.app_cust_image);
+            appSerImg = itemView.findViewById(R.id.app_ser_image);
             //cvApp = (CardView)itemView.findViewById(R.id.cvApp);
 
             itemView.setOnClickListener(new View.OnClickListener() {

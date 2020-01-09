@@ -108,78 +108,87 @@
 
             android:layout_width="360dp"
             android:layout_height="400dp"
-            android:orientation="vertical"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
             <LinearLayout
-                android:orientation="horizontal"
-                android:paddingLeft="25dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="25dp">
+
                 <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    app:srcCompat="@drawable/ic_phone"/>
+                    app:srcCompat="@drawable/ic_phone" />
+
                 <TextView
-                    android:textStyle="bold"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="20dp"
-                    android:textSize="16dp"
                     android:id="@+id/beau_phone"
-                    android:text="017 520 8176"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:text="017 520 8176"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
             </LinearLayout>
+
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:orientation="horizontal"
-                android:paddingLeft="25dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:paddingLeft="25dp">
+
                 <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    app:srcCompat="@drawable/ic_email"/>
+                    app:srcCompat="@drawable/ic_email" />
+
                 <TextView
-                    android:textStyle="bold"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="20dp"
-                    android:textSize="16dp"
                     android:id="@+id/beau_email"
-                    android:text="hchchc@gmail.com"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:text="hchchc@gmail.com"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
             </LinearLayout>
+
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:orientation="horizontal"
-                android:paddingLeft="25dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:paddingLeft="25dp">
+
                 <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    app:srcCompat="@drawable/ic_address"/>
+                    app:srcCompat="@drawable/ic_address" />
+
                 <TextView
-                    android:textStyle="bold"
-                    android:layout_gravity="center_vertical"
+                    android:id="@+id/beau_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:paddingLeft="20dp"
+                    android:text="233, Monroe Avenue Fort Myers Kuala Lumpur 53300"
                     android:textSize="16dp"
-                    android:id="@+id/beau_address"
-                    android:text="233, Monroe Avenue Fort Myers Kuala Lumpur 53300"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <Button
-                android:textColor="#ffffff"
-                android:background="@drawable/buttonstyle"
-                android:layout_marginTop="35dp"
-                android:layout_gravity="center_horizontal"
+                android:id="@+id/btnEditProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnEditProfile"
-                android:text="Edit Profile"/>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="35dp"
+                android:background="@drawable/buttonstyle"
+                android:text="Edit Profile"
+                android:textColor="#ffffff" />
 
         </LinearLayout>
 

@@ -104,7 +104,7 @@ public class BaseActivity extends AppCompatActivity implements HistoryFragment.O
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.item1) {
+        /*if (id == R.id.item1) {
             //Toast.makeText(BaseActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
             //Intent myIntent = new Intent(this, HistoryActivity.class);
             //myIntent.putExtra("key", value); //Optional parameters
@@ -120,10 +120,10 @@ public class BaseActivity extends AppCompatActivity implements HistoryFragment.O
             fragmentTransaction.replace(R.id.fragment_base, fragment);
             //fragment.setArguments(bundle);
             fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();*/
+            fragmentTransaction.commit();
 
             return true;
-        }
+        }*/
 
         if(id == R.id.item3)
         {
